@@ -1,5 +1,4 @@
-import sys
-import os
+
 
 Team1 = []
 Team2 = []
@@ -28,8 +27,6 @@ innings = 0
 batsmen_1 = ""
 batsmen_2 = ""
 
-##TEST##
-###TEST PUSH###
 ####FUNCTIONS####
 
 def side_set(Batting, Fielding):
@@ -104,9 +101,18 @@ def choosing_batsmen(batsmen, location):
 ####START MAIN####
 start = input("Inizalize scoring program? Y/N: ")
 start = start.lower()
+
+#ASK USER WHAT TYPE OF MATCH THEY WANT TO SCORE
 if start == 'y':
     print("""Welcome to the cricket scoring program
-This is currently only built for T20""")
+The program can switch between T20 or One day. Please choose""")
+    match_type = input("T20/1D")
+    match_type = match_type.lower()
+    if match_type == "t20":
+        over_type = 20
+    if match_type == "1d":
+        over_type = 50
+
     teams = input("Start filling in teams? Y/N?: ")
     teams = teams.lower()
     if teams == 'y':
@@ -153,7 +159,7 @@ team_length = len(batting_team)
 
 ####START OF MAIN GAME####
 while innings != 3:
-    while over != 20 or team_out == team_length:
+    while over != over_type or team_out == team_length:
         print("Flag: Main Game start")
 
         facing_input = int(input(f"Enter position of the batsmen that is facing: {facing_players}: ")) - 1
