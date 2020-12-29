@@ -29,6 +29,7 @@ batsmen_2 = ""
 
 ####FUNCTIONS####
 
+###SETTING SIDES DEPENDING ON WHAT THE USER HAS CHOOSEN
 def side_set(Batting, Fielding):
     # Fielding Team set
     global batting_team
@@ -49,7 +50,7 @@ def side_set(Batting, Fielding):
     for i in range(0, len(batting_team)):
         print(f"Batting Team: {batting_team[i]}")
 
-
+###SETTING PLAYER NAMES IN RESPECTIVE TEAMS
 def player_input(current_team, num_team, allowed_amount):
     print("Team player input")
     while allowed_amount == False:
@@ -67,7 +68,7 @@ def player_input(current_team, num_team, allowed_amount):
         num_team = num_team + 1
     print(current_team)
 
-
+###CAHNGING BOWLER IN FIELDING TEAM
 def bowler_change(bowler):
     if over == 1:
         new_bowler_pos = int(
@@ -81,13 +82,13 @@ def bowler_change(bowler):
     print(f'Our new bowler is {bowler}')
     print(f"{fielding_team}")
 
-
+###CODE FOR REMOVING PLAYER
 def remove_player(player, team_array):
     for players in team_array:
         if players == player:
             team_array.remove(player)
 
-
+###sELECTING BATSMEN
 def choosing_batsmen(batsmen, location):
     pos = int(input(f"For our first batsmen, enter the postion they are in in the list:{batting_team}: ")) - 1
     batsmen = batting_team[pos]
@@ -102,17 +103,18 @@ def choosing_batsmen(batsmen, location):
 start = input("Inizalize scoring program? Y/N: ")
 start = start.lower()
 
-#ASK USER WHAT TYPE OF MATCH THEY WANT TO SCORE
+###ASK USER WHAT TYPE OF MATCH THEY WANT TO SCORE
 if start == 'y':
     print("""Welcome to the cricket scoring program
 The program can switch between T20 or One day. Please choose""")
-    match_type = input("T20/1D")
+    match_type = input("T20/1D: ")
     match_type = match_type.lower()
     if match_type == "t20":
         over_type = 20
     if match_type == "1d":
         over_type = 50
 
+###ASK USER TO INPUT TEAMS
     teams = input("Start filling in teams? Y/N?: ")
     teams = teams.lower()
     if teams == 'y':
@@ -122,23 +124,19 @@ The program can switch between T20 or One day. Please choose""")
 print(f'Team 1 consists of {Team1}')
 print(f'Team 2 consists of {Team2}')
 
-start = input("Start game? Y/N: ")
-start = start.lower()
 
-# Game Start
-if start == 'y':
-    start_teams = input("What team is batting first? Team1/Team2: ")
-    start_teams = start_teams.lower()
 
-    if start_teams == "team1" or start_teams == "1":
-        # Batting = Team1
-        # Bowling = Team2
-        side_set(Team1, Team2)
 
-    if start_teams == "team2" or start_teams == "2":
-        # Batting = Team2
-        # Bowling = Team1
-        side_set(Team2, Team1)
+
+###SELECTING TEAM SIDES
+start_teams = input("What team is batting first? Team1/Team2: ")
+start_teams = start_teams.lower()
+
+if start_teams == "team1" or start_teams == "1":
+    side_set(Team1, Team2)
+
+if start_teams == "team2" or start_teams == "2":
+    side_set(Team2, Team1)
 
 print("Flag")
 
@@ -157,13 +155,14 @@ print(f'They will be facing off against {bowler}')
 
 team_length = len(batting_team)
 
+facing_input = int(input(f"Enter position of the batsmen that is facing: {facing_players}: ")) - 1
+facing = facing_players[facing_input]
+###DUMB VARIABLE NAME CHANGE LATER
+current_facing_player_pos_in_list = facing_input
+
 ####START OF MAIN GAME####
 while innings != 3:
     while over != over_type or team_out == team_length:
-        print("Flag: Main Game start")
-
-        facing_input = int(input(f"Enter position of the batsmen that is facing: {facing_players}: ")) - 1
-        facing = facing_players[facing_input]
         print("Please enter the following fields after the bowl is complete")
         play_out = input(f"Did {facing} get out? Y/N: ")
         play_out = play_out.lower()
@@ -180,16 +179,30 @@ while innings != 3:
             print(f"The players who are out now include: {out}")
             print(f"The remaining players are {batting_team}")
 
+###IF PLAYER IS NOT OUT
         if play_out == "n":
             current_play_runs = int(input("Please enter the amount of runs scored in that play: "))
             total_runs = current_play_runs + total_runs
             print(f"The current run total is {total_runs}")
             ball = ball + 1
             over = ball / 6
-    bowler_change(bowler)
+###wHICH PLAYER IS FACING NEXT BASED OF RUNS
+        if current_play_runs % 2 == 0:
+           print("Batsmen is same") 
+        else:
+            if current_facing_player_pos_in_list == 1:
+                facing = facing_players[2]
+                current_facing_player_pos_in_list = 2
+            elif current_facing_player_pos_in_list == 2:
+                facing = facing_players[1]
+                current_facing_player_pos_in_list = 1
+            
+        if over == 1:
+            bowler_change(bowler)
+            print(f"Your new bowler is {bowler}")
+    
 
 # FOR WHEN NEW BOWLER CAN BE CHOSEN
 
 
-innings = innings + 1
-#####Test push from VSC
+print(f"The first innings has been completed. The score was {team_out}/{total_runs}")
