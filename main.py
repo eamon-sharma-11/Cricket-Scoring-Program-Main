@@ -234,11 +234,8 @@ while innings != 3:
             out_array = [None] * 10
 
         ###MOVES PLAYERS BETWEEN SIDES
-
-
         ###MOVING CURRENT BOWLER BACK INTO LIST
         fielding_team.append(bowler)
-
 
         print(f"Current fielding team : {fielding_team}")
         print(f"Current batting team : {batting_team}")
@@ -266,7 +263,9 @@ while innings != 3:
         print(f"Current fielding team : {fielding_team}")
         print(f"Current batting team : {batting_team}")
 
-        innings = innings + 1
+
+
+
 
 
 
