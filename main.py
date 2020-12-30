@@ -25,7 +25,8 @@ innings = 1
 batsmen_1 = ""
 batsmen_2 = ""
 out_full = False
-
+match_type_setup = False
+team_select = False
 
 ####FUNCTIONS####
 
@@ -119,17 +120,22 @@ if start == 'y':
 The program can switch between T20 or One day. Please choose""")
     match_type = input("T20/1D: ")
     match_type = match_type.lower()
-    if match_type == "t20":
-        over_type = 20
-    if match_type == "1d":
-        over_type = 50
+    while match_type_setup == False:
+        if match_type == "t20":
+            over_type = 20
+            match_type_setup = True
+        if match_type == "1d":
+            over_type = 50
+            match_type_setup = True
+        else:
+            match_type = input("Invalid match type. Please try again. T20/1D: ")
+
+
 
     ###ASK USER TO INPUT TEAMS
-    teams = input("Start filling in teams? Y/N?: ")
-    teams = teams.lower()
-    if teams == 'y':
-        player_input(Team1, 1, False)
-        player_input(Team2, 1, False)
+print("Inout player names")
+player_input(Team1, 1, False)
+player_input(Team2, 1, False)
 
 print(f'Team 1 consists of {Team1}')
 print(f'Team 2 consists of {Team2}')
@@ -138,13 +144,17 @@ print(f'Team 2 consists of {Team2}')
 start_teams = input("What team is batting first? Team1/Team2: ")
 start_teams = start_teams.lower()
 
-if start_teams == "team1" or start_teams == "1":
-    side_set(Team1, Team2)
-    current_facing_team = "team1"
+while team_select == False:
+    if start_teams == "team1" or start_teams == "1":
+        side_set(Team1, Team2)
+        current_facing_team = "team1"
 
-if start_teams == "team2" or start_teams == "2":
-    side_set(Team2, Team1)
-    current_facing_team = "team2"
+    if start_teams == "team2" or start_teams == "2":
+        side_set(Team2, Team1)
+        current_facing_team = "team2"
+    else:
+        start_teams = input("Invalid team, try agian. Team1/Team2: ")
+        start_teams = start_teams.lower()
 
 print("Flag")
 
@@ -262,6 +272,20 @@ while innings != 3:
 
         print(f"Current fielding team : {fielding_team}")
         print(f"Current batting team : {batting_team}")
+
+        choosing_batsmen(batsmen_1, 0)
+        choosing_batsmen(batsmen_2, 1)
+
+        current_bolwer_pos = int(input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
+        bowler = fielding_team[current_bolwer_pos]
+        print(f"You have selected {bowler} as the first bowler")
+        remove_player(bowler, fielding_team)
+
+        print(f'Our starting batting lineup for innigs 2include {batsmen_1} and {batsmen_2}')
+        print(f'They will be facing off against {bowler}')
+
+    if innings == 3:
+        print("Stub")
 
 
 
