@@ -110,7 +110,7 @@ def choosing_batsmen(batsmen, location):
             batting_team.remove(batsmen)
 
 
-
+#Start Program
 def start():
     global match_type
     global over_type
@@ -129,6 +129,29 @@ while match_type_setup == False:
         else:
             match_type = input("Invalid match type. Please try again. T20/1D: ")
 
+#MOVING AROUND RESULTS
+def moving_results():
+    global out_array_1
+    global out_array_2
+    global out_array
+     ###MOVING OUT PLAYERS INTO DIFFEERENT LIST IF TEAM 1 IS BATTING
+        if current_facing_team == "team1":
+            out_array_1 = [None] * len(out_array)
+            for i in range(0, len(out_array)):
+                out_array_1[i] = out_array[i]
+            out_array = [None] * 10
+
+            overall_runs_1 = total_runs
+            total_runs = 0
+        ###MOVING OUT PLAYERS INTO DIFFEERENT LIST IF TEAM 1 IS BATTING
+        if start_teams == "team2":
+            out_array_2 = [None] * len(out_array)
+            for i in range(0, len(out_array)):
+                out_array_2[i] = out_array[i]
+            out_array = [None] * 10
+
+            overall_runs_2 = total_runs
+            total_runs = 0
 
 
 ###START
@@ -234,18 +257,8 @@ while innings != 3:
     if innings == 2:
         ###RESETING VARIABLES FOR NEXT INNINGS
         print("FLAG FOR END OF INNINGS")
-        ###MOVING OUT PLAYERS INTO DIFFEERENT LIST IF TEAM 1 IS BATTING
-        if current_facing_team == "team1":
-            out_array_1 = [None] * len(out_array)
-            for i in range(0, len(out_array)):
-                out_array_1[i] = out_array[i]
-            out_array = [None] * 10
-        ###MOVING OUT PLAYERS INTO DIFFEERENT LIST IF TEAM 1 IS BATTING
-        if start_teams == "team2":
-            out_array_2 = [None] * len(out_array)
-            for i in range(0, len(out_array)):
-                out_array_2[i] = out_array[i]
-            out_array = [None] * 10
+    
+        moving_results()
 
         ###MOVES PLAYERS BETWEEN SIDES
         ###MOVING CURRENT BOWLER BACK INTO LIST
@@ -289,7 +302,9 @@ while innings != 3:
         print(f'They will be facing off against {bowler}')
 
     if innings == 3:
-        print("Stub")
+        moving_results()
+        print("Results:")
+        print(f"Team 1 final score: {}")
 
 
 
