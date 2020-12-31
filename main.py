@@ -25,8 +25,8 @@ innings = 1
 batsmen_1 = ""
 batsmen_2 = ""
 out_full = False
-match_type_setup = False
 team_select = False
+
 
 ####FUNCTIONS####
 
@@ -99,7 +99,7 @@ def remove_player(player, team_array):
             team_array.remove(player)
 
 
-###sELECTING BATSMEN
+###SELECTING BATSMEN
 def choosing_batsmen(batsmen, location):
     pos = int(input(f"For our first batsmen, enter the postion they are in in the list:{batting_team}: ")) - 1
     batsmen = batting_team[pos]
@@ -110,30 +110,35 @@ def choosing_batsmen(batsmen, location):
             batting_team.remove(batsmen)
 
 
-####START MAIN####
-start = input("Inizalize scoring program? Y/N: ")
-start = start.lower()
 
-###ASK USER WHAT TYPE OF MATCH THEY WANT TO SCORE
-if start == 'y':
-    print("""Welcome to the cricket scoring program
+def start():
+    global match_type
+    global over_type
+match_type_setup = False
+print("""Welcome to the cricket scoring program
 The program can switch between T20 or One day. Please choose""")
-    match_type = input("T20/1D: ")
-    match_type = match_type.lower()
-    while match_type_setup == False:
+match_type = input("T20/1D: ")
+match_type = match_type.lower()
+while match_type_setup == False:
         if match_type == "t20":
             over_type = 20
-            match_type_setup = True
+            break
         if match_type == "1d":
             over_type = 50
-            match_type_setup = True
+            break
         else:
             match_type = input("Invalid match type. Please try again. T20/1D: ")
 
 
 
+###START
+
+start()
+print(f"Each team will play {over_type} overs")
+
+
     ###ASK USER TO INPUT TEAMS
-print("Inout player names")
+print("Input player names")
 player_input(Team1, 1, False)
 player_input(Team2, 1, False)
 
@@ -142,14 +147,13 @@ print(f'Team 2 consists of {Team2}')
 
 ###SELECTING TEAM SIDES
 start_teams = input("What team is batting first? Team1/Team2: ")
-start_teams = start_teams.lower()
 
 while team_select == False:
-    if start_teams == "team1" or start_teams == "1":
+    if start_teams.lower() == "team1" or start_teams.lower() == "1":
         side_set(Team1, Team2)
         current_facing_team = "team1"
 
-    if start_teams == "team2" or start_teams == "2":
+    if start_teams.lower() == "team2" or start_teams.lower() == "2":
         side_set(Team2, Team1)
         current_facing_team = "team2"
     else:
@@ -162,8 +166,8 @@ print("Flag")
 choosing_batsmen(batsmen_1, 0)
 choosing_batsmen(batsmen_2, 1)
 
-current_bolwer_pos = int(
-    input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
+###CHOOSING BOWLER###
+current_bolwer_pos = int(input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
 bowler = fielding_team[current_bolwer_pos]
 print(f"You have selected {bowler} as the first bowler")
 remove_player(bowler, fielding_team)
