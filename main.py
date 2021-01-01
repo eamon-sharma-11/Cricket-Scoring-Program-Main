@@ -110,48 +110,54 @@ def choosing_batsmen(batsmen, location):
             batting_team.remove(batsmen)
 
 
-#Start Program
+# Start Program
 def start():
     global match_type
     global over_type
+
+
 match_type_setup = False
 print("""Welcome to the cricket scoring program
 The program can switch between T20 or One day. Please choose""")
 match_type = input("T20/1D: ")
 match_type = match_type.lower()
 while match_type_setup == False:
-        if match_type == "t20":
-            over_type = 20
-            break
-        if match_type == "1d":
-            over_type = 50
-            break
-        else:
-            match_type = input("Invalid match type. Please try again. T20/1D: ")
+    if match_type == "t20":
+        over_type = 20
+        break
+    if match_type == "1d":
+        over_type = 50
+        break
+    else:
+        match_type = input("Invalid match type. Please try again. T20/1D: ")
 
-#MOVING AROUND RESULTS
+
+# MOVING AROUND RESULTS
 def moving_results():
     global out_array_1
     global out_array_2
     global out_array
-     ###MOVING OUT PLAYERS INTO DIFFEERENT LIST IF TEAM 1 IS BATTING
-        if current_facing_team == "team1":
-            out_array_1 = [None] * len(out_array)
-            for i in range(0, len(out_array)):
-                out_array_1[i] = out_array[i]
-            out_array = [None] * 10
-
-            overall_runs_1 = total_runs
-            total_runs = 0
+    global overall_runs_1
+    global overall_runs_2
+    global team_out_1
+    global team_out_2
+    ###MOVING OUT PLAYERS INTO DIFFEERENT LIST IF TEAM 1 IS BATTING
+    if current_facing_team == "team1":
+        out_array_1 = [None] * len(out_array)
+        for i in range(0, len(out_array)):
+            out_array_1[i] = out_array[i]
+        out_array = [None] * 10
+        team_out_1 = team_out
+        overall_runs_1 = total_runs
         ###MOVING OUT PLAYERS INTO DIFFEERENT LIST IF TEAM 1 IS BATTING
-        if start_teams == "team2":
-            out_array_2 = [None] * len(out_array)
-            for i in range(0, len(out_array)):
-                out_array_2[i] = out_array[i]
-            out_array = [None] * 10
-
-            overall_runs_2 = total_runs
-            total_runs = 0
+    if start_teams == "team2":
+        out_array_2 = [None] * len(out_array)
+        for i in range(0, len(out_array)):
+            out_array_2[i] = out_array[i]
+        out_array = [None] * 10
+        team_out_2 = team_out
+        overall_runs_2 = total_runs
+        total_runs = 0
 
 
 ###START
@@ -159,8 +165,7 @@ def moving_results():
 start()
 print(f"Each team will play {over_type} overs")
 
-
-    ###ASK USER TO INPUT TEAMS
+###ASK USER TO INPUT TEAMS
 print("Input player names")
 player_input(Team1, 1, False)
 player_input(Team2, 1, False)
@@ -190,7 +195,8 @@ choosing_batsmen(batsmen_1, 0)
 choosing_batsmen(batsmen_2, 1)
 
 ###CHOOSING BOWLER###
-current_bolwer_pos = int(input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
+current_bolwer_pos = int(
+    input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
 bowler = fielding_team[current_bolwer_pos]
 print(f"You have selected {bowler} as the first bowler")
 remove_player(bowler, fielding_team)
@@ -221,10 +227,10 @@ while innings != 3:
             new_batsmen_pos = int(input(f"Select the position of the new batsmen {batting_team}: ")) - 1
             facing_players[facing_input] = batting_team[new_batsmen_pos]
             for players in batting_team:
-                    for facing in facing_players:
-                        if players == facing:
-                            batting_team.remove(players)
-                            facing_players.remove(players)
+                for facing in facing_players:
+                    if players == facing:
+                        batting_team.remove(players)
+                        facing_players.remove(players)
             print(f"The players who are out now include: {out}")
             print(f"The remaining players are {batting_team}")
             facing_length = len(facing_players)
@@ -236,7 +242,7 @@ while innings != 3:
             print(f"The current run total is {total_runs}")
             ball = ball + 1
             over = ball / 6
-        ###wHICH PLAYER IS FACING NEXT BASED OF RUNS
+            ###wHICH PLAYER IS FACING NEXT BASED OF RUNS
             if current_play_runs % 2 == 0:
                 print("Batsmen is same")
             if current_play_runs % 2 != 0:
@@ -257,7 +263,7 @@ while innings != 3:
     if innings == 2:
         ###RESETING VARIABLES FOR NEXT INNINGS
         print("FLAG FOR END OF INNINGS")
-    
+
         moving_results()
 
         ###MOVES PLAYERS BETWEEN SIDES
@@ -293,7 +299,8 @@ while innings != 3:
         choosing_batsmen(batsmen_1, 0)
         choosing_batsmen(batsmen_2, 1)
 
-        current_bolwer_pos = int(input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
+        current_bolwer_pos = int(
+            input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
         bowler = fielding_team[current_bolwer_pos]
         print(f"You have selected {bowler} as the first bowler")
         remove_player(bowler, fielding_team)
@@ -304,7 +311,25 @@ while innings != 3:
     if innings == 3:
         moving_results()
         print("Results:")
-        print(f"Team 1 final score: {}")
+        print(f"Team 1 final score: {team_out_1}/{overall_runs_1}")
+        print(f"Team 2 final score: {team_out_2}/{overall_runs_2}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
