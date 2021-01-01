@@ -100,8 +100,14 @@ def remove_player(player, team_array):
 
 
 ###SELECTING BATSMEN
-def choosing_batsmen(batsmen, location):
-    pos = int(input(f"For our first batsmen, enter the postion they are in in the list:{batting_team}: ")) - 1
+def choosing_batsmen(batsmen, location, pos_select):
+    length_of_team = len(batting_team)
+    while pos_select == False:
+        pos = int(input(f"For our first batsmen, enter the postion they are in in the list:{batting_team}: ")) - 1
+        if pos < length_of_team and pos >= 0:
+            pos_select = True
+        else:
+            print("Invalid position")
     batsmen = batting_team[pos]
     facing_players[location] = batsmen
     print(f"You have selected {batsmen} as a batsmen")
@@ -180,10 +186,14 @@ while team_select == False:
     if start_teams.lower() == "team1" or start_teams.lower() == "1":
         side_set(Team1, Team2)
         current_facing_team = "team1"
+        team_select = True
+        break
 
     if start_teams.lower() == "team2" or start_teams.lower() == "2":
         side_set(Team2, Team1)
         current_facing_team = "team2"
+        team_select = True
+        break
     else:
         start_teams = input("Invalid team, try agian. Team1/Team2: ")
         start_teams = start_teams.lower()
@@ -191,12 +201,18 @@ while team_select == False:
 print("Flag")
 
 #####CHOOSING BATSMEN####
-choosing_batsmen(batsmen_1, 0)
-choosing_batsmen(batsmen_2, 1)
+choosing_batsmen(batsmen_1, 0, False)
+choosing_batsmen(batsmen_2, 1, False)
 
 ###CHOOSING BOWLER###
-current_bolwer_pos = int(
-    input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
+pos_select_bowler = False
+length_of_fieldteam = len(fielding_team)
+current_bolwer_pos = int(input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
+while pos_select_bowler == False:
+    if pos < length_of_fieldteam and pos >= 0:
+        pos_select_bowler = True
+    else:
+        print("Invalid position, try again")
 bowler = fielding_team[current_bolwer_pos]
 print(f"You have selected {bowler} as the first bowler")
 remove_player(bowler, fielding_team)
