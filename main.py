@@ -163,7 +163,7 @@ def moving_results():
         out_array = [None] * 10
         team_out_2 = team_out
         overall_runs_2 = total_runs
-        total_runs = 0
+        
 
 
 ###START
@@ -207,13 +207,15 @@ choosing_batsmen(batsmen_2, 1, False)
 ###CHOOSING BOWLER###
 pos_select_bowler = False
 length_of_fieldteam = len(fielding_team)
-current_bolwer_pos = int(input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
 while pos_select_bowler == False:
-    if pos < length_of_fieldteam and pos >= 0:
+    current_bowler_pos = int(input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
+    if current_bowler_pos < length_of_fieldteam and current_bowler_pos >= 0:
         pos_select_bowler = True
+        break
     else:
         print("Invalid position, try again")
-bowler = fielding_team[current_bolwer_pos]
+
+bowler = fielding_team[current_bowler_pos]
 print(f"You have selected {bowler} as the first bowler")
 remove_player(bowler, fielding_team)
 
@@ -228,6 +230,7 @@ while innings != 3:
     current_facing_player_pos_in_list = facing_input + 1
     facing = facing_players[facing_input]
     ###DUMB VARIABLE NAME CHANGE LATER
+    facing_length = len(facing_players)
     while over != over_type or out_full == True or facing_length <= 1:
         print(f"This is innings {innings}")
         print("Please enter the following fields after the bowl is complete")
@@ -249,7 +252,7 @@ while innings != 3:
                         facing_players.remove(players)
             print(f"The players who are out now include: {out}")
             print(f"The remaining players are {batting_team}")
-            facing_length = len(facing_players)
+            
 
         ###IF PLAYER IS NOT OUT
         if play_out == "n":
@@ -312,17 +315,18 @@ while innings != 3:
         print(f"Current fielding team : {fielding_team}")
         print(f"Current batting team : {batting_team}")
 
-        choosing_batsmen(batsmen_1, 0)
-        choosing_batsmen(batsmen_2, 1)
+        choosing_batsmen(batsmen_1, 0, False)
+        choosing_batsmen(batsmen_2, 1, False)
 
-        current_bolwer_pos = int(
+        current_bowler_pos = int(
             input(f'For our first bowler, please enter the postion that they are in the list:{fielding_team}: ')) - 1
-        bowler = fielding_team[current_bolwer_pos]
+        bowler = fielding_team[current_bowler_pos]
         print(f"You have selected {bowler} as the first bowler")
         remove_player(bowler, fielding_team)
 
         print(f'Our starting batting lineup for innigs 2include {batsmen_1} and {batsmen_2}')
         print(f'They will be facing off against {bowler}')
+        total_runs = 0
 
     if innings == 3:
         moving_results()
