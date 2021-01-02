@@ -315,6 +315,11 @@ while innings != 3:
         print(f"Current fielding team : {fielding_team}")
         print(f"Current batting team : {batting_team}")
 
+###CLEARING BATSMEN FROM LAST INNINGS
+
+        batsmen.clear()
+        facing_players = [None] * 2
+
         choosing_batsmen(batsmen_1, 0, False)
         choosing_batsmen(batsmen_2, 1, False)
 
@@ -324,7 +329,7 @@ while innings != 3:
         print(f"You have selected {bowler} as the first bowler")
         remove_player(bowler, fielding_team)
 
-        print(f'Our starting batting lineup for innigs 2include {batsmen_1} and {batsmen_2}')
+        print(f'Our starting batting lineup for innigs 2 include {batsmen_1} and {batsmen_2}')
         print(f'They will be facing off against {bowler}')
         total_runs = 0
 
