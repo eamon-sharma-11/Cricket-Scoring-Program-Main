@@ -28,6 +28,7 @@ out_full = False
 team_select = False
 
 
+
 ####FUNCTIONS####
 
 ###SETTING SIDES DEPENDING ON WHAT THE USER HAS CHOOSEN
@@ -78,15 +79,14 @@ def player_input(current_team, num_team, allowed_amount):
 
 
 ###CAHNGING BOWLER IN FIELDING TEAM
-def bowler_change(bowler):
-    if over == 1:
-        new_bowler_pos = int(
-            input(f"You must now select a new bowler from {fielding_team}. Enter the postition of your new bowler: "))
-        new_bowler_pos = new_bowler_pos - 1
-        bowler_moving_in = fielding_team[new_bowler_pos]
-        bowler_moving_out = bowler
-        bowler = bowler_moving_in
-        fielding_team[new_bowler_pos] = bowler_moving_out
+def bowler_change(old_bowler):
+    global bowler
+    new_bowler_pos = int(input(f"You must now select a new bowler from {fielding_team}. Enter the postition of your new bowler: "))
+    new_bowler_pos = new_bowler_pos - 1
+    bowler_moving_in = fielding_team[new_bowler_pos]
+    bowler_moving_out = old_bowler
+    bowler = bowler_moving_in
+    fielding_team[new_bowler_pos] = bowler_moving_out
 
     print(f'Our new bowler is {bowler}')
     print(f"{fielding_team}")
@@ -164,6 +164,14 @@ def moving_results():
         team_out_2 = team_out
         overall_runs_2 = total_runs
         
+###CHOOSING STARTING BATSMEN
+def starting_batsmen():
+    global facing
+    global current_facing_player_pos_in_list
+    facing_input = int(input(f"Enter position of the batsmen that is facing: {facing_players}: ")) - 1
+    current_facing_player_pos_in_list = facing_input + 1
+    facing = facing_players[facing_input]
+    
 
 
 ###START
@@ -226,9 +234,7 @@ team_length = len(batting_team)
 
 ####START OF MAIN GAME####
 while innings != 3:
-    facing_input = int(input(f"Enter position of the batsmen that is facing: {facing_players}: ")) - 1
-    current_facing_player_pos_in_list = facing_input + 1
-    facing = facing_players[facing_input]
+    starting_batsmen()
     ###DUMB VARIABLE NAME CHANGE LATER
     facing_length = len(facing_players)
     while over != over_type or out_full == True or facing_length <= 1:
@@ -237,6 +243,9 @@ while innings != 3:
         play_out = input(f"Did {facing} get out? Y/N: ")
         play_out = play_out.lower()
         if play_out == "y":
+            ball = ball + 1
+            over = ball / 6
+            change_bowler = ball % 6
             team_out = team_out + 1
             array_out = int(team_out)
             out_array[array_out - 1] = facing
@@ -244,14 +253,21 @@ while innings != 3:
                 out_full = True
                 break
             new_batsmen_pos = int(input(f"Select the position of the new batsmen {batting_team}: ")) - 1
-            facing_players[facing_input] = batting_team[new_batsmen_pos]
+            facing_players.insert(1, batting_team[new_batsmen_pos])
             for players in batting_team:
                 for facing in facing_players:
                     if players == facing:
                         batting_team.remove(players)
                         facing_players.remove(players)
-            print(f"The players who are out now include: {out}")
+            for players in facing_players:
+                for out_players in out_array:
+                    if players == out_players:
+                        facing_players.remove(players)
+            facing_players.append(facing)
+            print(f"The players who are out now include: {out_array}")
             print(f"The remaining players are {batting_team}")
+            print(f"The facing players are {facing_players}")
+            starting_batsmen()
             
 
         ###IF PLAYER IS NOT OUT
@@ -261,6 +277,7 @@ while innings != 3:
             print(f"The current run total is {total_runs}")
             ball = ball + 1
             over = ball / 6
+            change_bowler = ball % 6
             ###wHICH PLAYER IS FACING NEXT BASED OF RUNS
             if current_play_runs % 2 == 0:
                 print("Batsmen is same")
@@ -272,7 +289,8 @@ while innings != 3:
                     facing = facing_players[0]
                     current_facing_player_pos_in_list = 1
         ###CHANGES BOWLER IF OVER IS FINISHED
-        if over == 1:
+
+        if change_bowler == 0:
             bowler_change(bowler)
             print(f"Your new bowler is {bowler}")
 
@@ -315,11 +333,6 @@ while innings != 3:
         print(f"Current fielding team : {fielding_team}")
         print(f"Current batting team : {batting_team}")
 
-###CLEARING BATSMEN FROM LAST INNINGS
-
-        batsmen.clear()
-        facing_players = [None] * 2
-
         choosing_batsmen(batsmen_1, 0, False)
         choosing_batsmen(batsmen_2, 1, False)
 
@@ -329,9 +342,13 @@ while innings != 3:
         print(f"You have selected {bowler} as the first bowler")
         remove_player(bowler, fielding_team)
 
-        print(f'Our starting batting lineup for innigs 2 include {batsmen_1} and {batsmen_2}')
+        print(f'Our starting batting lineup for innigs 2include {batsmen_1} and {batsmen_2}')
         print(f'They will be facing off against {bowler}')
         total_runs = 0
+        team_out = 0
+        over = 0
+        change_bowler = 0
+        ball = 0
 
     if innings == 3:
         moving_results()
